@@ -69,11 +69,6 @@ struct HomeView: View {
                         .font(.system(size: 14))
                         .foregroundStyle(Theme.cinnabar)
                 }
-                Text(day.currentTerm.term.summary)
-                    .font(.system(size: 14))
-                    .foregroundStyle(Theme.inkSoft)
-                    .lineLimit(3)
-                    .padding(.top, 6)
                 Spacer(minLength: 0)
             }
             .foregroundStyle(Theme.ink)
