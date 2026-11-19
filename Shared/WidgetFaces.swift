@@ -76,7 +76,7 @@ struct MediumWidgetFace: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
 
-            IllustrationImage(pinyin: snapshot.illustrationPinyin)
+            IllustrationImage(pinyin: snapshot.illustrationPinyin, maxPixelSize: 960)
                 .frame(width: 92)
                 .frame(maxHeight: .infinity)
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))

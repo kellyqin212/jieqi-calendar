@@ -7,8 +7,10 @@ struct RootView: View {
     var body: some View {
         Group {
             switch launch.screenshot {
-            case .home:
+            case .home, .festival:
                 HomeView()
+            case .term:
+                TermDetailScreen()
             case .month:
                 MonthCalendarView()
             case .about:

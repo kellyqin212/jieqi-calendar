@@ -58,7 +58,8 @@ targets:
       - path: Widget/Sources
       - path: Shared
       - path: App/Resources/Fonts
-      - path: App/Resources/Illustrations
+      # 缩小版插画。原图是 768x1280，解码约 4MB，小组件扩展装不下。
+      - path: Widget/Resources/Illustrations
         type: folder
     dependencies:
       - package: JieqiCore

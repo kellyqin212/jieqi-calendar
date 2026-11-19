@@ -3,7 +3,7 @@ import Foundation
 /// 界面上要固定出现的说明。态度、人工智能标识和许可致谢集中在这里，避免各页各写一句。
 public enum AppCopy {
     public static let stance = "本应用提供农历、节气和传统节日说明，不做宜忌、运势和吉凶判断。"
-    public static let aiNotice = "本应用中的节气插画为人工智能生成合成内容。"
+    public static let aiNotice = "本应用中的节气与节日插画为人工智能生成合成内容。"
     public static let aiMark = "插画为人工智能生成"
     public static let timeNote = "交节时刻为北京时间，用来阅读物候，不是择日依据。"
     public static let offline = "历法、节气和节日都在本机计算，不需要登录，也不索取定位。"

@@ -30,30 +30,15 @@ jobs:
       - name: Boot the simulator and capture the UI
         run: bash scripts/screenshots.sh
 
-      - name: Upload home screenshot
+      - name: Upload screenshots
         uses: actions/upload-artifact@v4
         with:
-          name: screenshot-home
-          path: screenshots/home.png
-          if-no-files-found: error
-
-      - name: Upload month screenshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshot-month
-          path: screenshots/month.png
-          if-no-files-found: error
-
-      - name: Upload about screenshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshot-about
-          path: screenshots/about.png
-          if-no-files-found: error
-
-      - name: Upload widget screenshot
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshot-widgets
-          path: screenshots/widgets.png
+          name: screenshots
+          path: |
+            screenshots/home.png
+            screenshots/term.png
+            screenshots/festival.png
+            screenshots/month.png
+            screenshots/about.png
+            screenshots/widgets.png
           if-no-files-found: error

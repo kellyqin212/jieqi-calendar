@@ -17,13 +17,15 @@
 1. 打开本仓库的 **Actions**。
 2. **CI** 在每次推送和每个拉取请求上运行：用 XcodeGen 生成工程，在 iOS 模拟器里编译应用和小组件，并跑单元测试。绿色勾表示通过。点进某一次运行可以看编译和测试日志。
 3. **Screenshots** 会在拉取请求上跑一次。以后要再看界面，在 Actions 里选中 Screenshots，右侧 **Run workflow** 手动运行。它会启动模拟器、打开应用，并把截图上传为构建产物。
-4. 打开某一次 Screenshots 运行，页面底部的 **Artifacts** 里有四份截图：
-   - `screenshot-home`：2026-06-21 夏至的首页
-   - `screenshot-month`：2026 年 6 月的月历
-   - `screenshot-about`：关于页，含人工智能标识和字体许可
-   - `screenshot-widgets`：小、中两款小组件的预览
+4. 打开某一次 Screenshots 运行，页面底部的 **Artifacts** 里有一份 `screenshots`，里面是这些图：
+   - `home.png`：2026-06-21 夏至的今日页
+   - `term.png`：夏至的节气详情
+   - `festival.png`：2026-02-17 春节
+   - `month.png`：2026 年 6 月的月历
+   - `about.png`：关于页，含人工智能标识和字体许可
+   - `widgets.png`：小、中两款小组件的预览
 
-截图把日期固定在 2026 年 6 月 21 日，所以每次看到的都是夏至，而不是运行当天。
+今日、节气详情、月历、关于和小组件把日期固定在 2026 年 6 月 21 日（夏至）。节日那张固定在 2026 年 2 月 17 日（春节）。看到的都不是运行当天。
 
 模拟器编译不签名，现在不需要 Apple 开发者账号。
 
@@ -40,21 +42,19 @@ xcodegen generate
 
 ## 插画文件
 
-成稿放在 `App/Resources/Illustrations/`，文件名是拼音，图里不要写字。应用按这个名字找图，找不到就用 `placeholder.png`。
+成稿在 `App/Resources/Illustrations/`，JPEG，768×1280，图里没有字。应用按拼音找图，找不到就用 `placeholder.png`。目录是 Xcode 的 folder reference，生成工程时会整夹带走。
 
-已经放好的三张：
-
-| 文件 | 节气 |
-| --- | --- |
-| `lichun.png` | 立春 |
-| `xiazhi.png` | 夏至 |
-| `dongzhi.png` | 冬至 |
-
-其余 32 张按下面的文件名丢进同一目录，再运行一次 `xcodegen generate` 即可。目录是 Xcode 的 folder reference，生成工程时会整夹带走。
+二十四节气和十一个节日都已放好，共 35 张。清明节与节气共用 `qingming.jpg`。代码里的节日标识仍是 `beifangxiaonian`、`nanfangxiaonian`，对应的文件是 `xiaonian_north.jpg`、`xiaonian_south.jpg`。
 
 节气 24 个：`lichun` `yushui` `jingzhe` `chunfen` `qingming` `guyu` `lixia` `xiaoman` `mangzhong` `xiazhi` `xiaoshu` `dashu` `liqiu` `chushu` `bailu` `qiufen` `hanlu` `shuangjiang` `lidong` `xiaoxue` `daxue` `dongzhi` `xiaohan` `dahan`
 
-节日 11 个（清明与节气共用 `qingming.png`，不再单独占一个名字）：`chunjie` `chuxi` `yuanxiao` `duanwu` `qixi` `zhongyuan` `zhongqiu` `chongyang` `laba` `beifangxiaonian` `nanfangxiaonian`
+节日 11 个：`chunjie` `chuxi` `yuanxiao` `duanwu` `qixi` `zhongyuan` `zhongqiu` `chongyang` `laba` `xiaonian_north` `xiaonian_south`
+
+小组件扩展内存紧。中号小组件用的是 `Widget/Resources/Illustrations/` 里的 480×800 缩小版，解码时再把长边限制在 960 像素。从成稿重新生成：
+
+```bash
+bash scripts/make-widget-illustrations.sh
+```
 
 `placeholder.png` 是脚本画的素纸，不是节气成稿。重新生成：
 
@@ -86,7 +86,7 @@ python3 scripts/subset-font.py /path/to/SourceHanSerifCN-Regular.otf
 
 ## 这一版有什么，还没有什么
 
-有：首页（当天公历、农历、当前节气和插画）、月历（农历日、节气、传统节日）、小和中两款小组件、关于页、StoreKit 2 购买层和本地测试配置、节气与农历的单元测试。
+有：首页（当天公历、农历、当前节气或节日，以及对应插画）、节气详情、月历（农历日、节气、传统节日）、小和中两款小组件、关于页、StoreKit 2 购买层和本地测试配置、节气与农历的单元测试。全套 35 张节气和节日插画已经放进应用。
 
 还没有：法定假日和调休、通知、大号月历小组件、第二套插画、真正的 App Store 商品。购买按钮在模拟器里读得到本地配置时才能点；点了也不会换上第二套图，因为那套图还没画。
 

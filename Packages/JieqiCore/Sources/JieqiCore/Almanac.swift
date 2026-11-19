@@ -78,6 +78,21 @@ public struct DayDetail: Equatable {
     public var markerIsFestival: Bool {
         todayTerm == nil && festivals.first != nil
     }
+
+    /// 节气日仍以节气为主。没有节气的节日用节日当这一天的主图和主标题。
+    public var featuredFestival: Festival? {
+        guard todayTerm == nil else { return nil }
+        return festivals.first
+    }
+
+    public var heroTitle: String {
+        featuredFestival?.name ?? currentTerm.term.name
+    }
+
+    /// 铺在首页和小组件上的图。清明当天节气与节日是同一张。
+    public var illustrationPinyin: String {
+        featuredFestival?.pinyin ?? currentTerm.term.pinyin
+    }
 }
 
 public struct MonthPage: Equatable {
@@ -199,7 +214,7 @@ public enum Almanac {
             primaryLabel: primaryLabel,
             primaryName: primaryName,
             secondaryLine: secondary,
-            illustrationPinyin: day.currentTerm.term.pinyin
+            illustrationPinyin: day.illustrationPinyin
         )
     }
 

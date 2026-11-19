@@ -26,6 +26,9 @@ final class AlmanacTests: XCTestCase {
         XCTAssertEqual(day.nextTerm.term, .xiazhi)
         XCTAssertEqual(day.nextTerm.date, CivilDate(year: 2026, month: 6, day: 21))
         XCTAssertEqual(day.daysUntilNextTerm, 1)
+        XCTAssertNil(day.featuredFestival)
+        XCTAssertEqual(day.heroTitle, "芒种")
+        XCTAssertEqual(day.illustrationPinyin, "mangzhong")
     }
 
     func testLiChun2026IsStillThePreviousLunarYear() {
@@ -50,6 +53,9 @@ final class AlmanacTests: XCTestCase {
         XCTAssertEqual(qingming.todayTerm?.term, .qingming)
         XCTAssertTrue(qingming.festivals.contains { $0.id == .qingming })
         XCTAssertEqual(qingming.lunarLine, "二月十八")
+        XCTAssertNil(qingming.featuredFestival)
+        XCTAssertEqual(qingming.heroTitle, "清明")
+        XCTAssertEqual(qingming.illustrationPinyin, "qingming")
     }
 
     func testDongZhi2026AndTheFollowingXiaoHan() {
@@ -93,12 +99,26 @@ final class AlmanacTests: XCTestCase {
         XCTAssertEqual(eve.festivals.map(\.id), [.chuxi])
         XCTAssertEqual(eve.lunarMonth, 12)
         XCTAssertFalse(eve.festivals.contains { $0.id == .chunjie })
+        XCTAssertEqual(eve.featuredFestival?.id, .chuxi as FestivalID?)
+        XCTAssertEqual(eve.heroTitle, "除夕")
+        XCTAssertEqual(eve.illustrationPinyin, "chuxi")
+
+        let chunjie = Almanac.day(year: 2026, month: 2, day: 17)
+        XCTAssertEqual(chunjie.featuredFestival?.id, .chunjie as FestivalID?)
+        XCTAssertEqual(chunjie.heroTitle, "春节")
+        XCTAssertEqual(chunjie.illustrationPinyin, "chunjie")
+        let chunjieWidget = Almanac.widgetSnapshot(for: chunjie)
+        XCTAssertEqual(chunjieWidget.primaryName, "春节")
+        XCTAssertEqual(chunjieWidget.illustrationPinyin, "chunjie")
     }
 
     func testDuanWuAndYuanXiao2026() {
         let duanwu = Almanac.day(year: 2026, month: 6, day: 19)
         XCTAssertEqual(duanwu.lunarLine, "五月初五")
         XCTAssertEqual(duanwu.festivals.map(\.id), [.duanwu])
+        XCTAssertEqual(duanwu.heroTitle, "端午")
+        XCTAssertEqual(duanwu.illustrationPinyin, "duanwu")
+        XCTAssertEqual(Almanac.widgetSnapshot(for: duanwu).illustrationPinyin, "duanwu")
 
         let yuanxiao = Almanac.day(year: 2026, month: 3, day: 3)
         XCTAssertEqual(yuanxiao.lunarLine, "正月十五")
@@ -174,12 +194,66 @@ final class AlmanacTests: XCTestCase {
         XCTAssertTrue(names.contains("beifangxiaonian"))
         XCTAssertTrue(names.contains("nanfangxiaonian"))
         XCTAssertEqual(Set(names).count, names.count)
+        XCTAssertEqual(IllustrationCatalog.fileName(for: "beifangxiaonian"), "xiaonian_north.jpg")
+        XCTAssertEqual(IllustrationCatalog.fileName(for: "nanfangxiaonian"), "xiaonian_south.jpg")
+        XCTAssertEqual(IllustrationCatalog.fileName(for: "qingming"), "qingming.jpg")
+        var stems = Set<String>()
         for name in names {
             XCTAssertNotNil(name.range(of: "^[a-z]+$", options: .regularExpression))
-            XCTAssertEqual(IllustrationCatalog.fileName(for: name), "\(name).png")
+            let stem = IllustrationCatalog.resourceStem(for: name)
+            XCTAssertTrue(stems.insert(stem).inserted, stem)
+            XCTAssertEqual(IllustrationCatalog.fileName(for: name), "\(stem).jpg")
         }
+        XCTAssertEqual(stems.count, 35)
+        XCTAssertTrue(stems.contains("xiaonian_north"))
+        XCTAssertTrue(stems.contains("xiaonian_south"))
         XCTAssertEqual(SolarTerm.allCases.map(\.pinyin).count, 24)
         XCTAssertEqual(FestivalID.allCases.count, 12)
+    }
+
+    func testAppAndWidgetShipEveryIllustration() throws {
+        let app = Bundle(identifier: "app.suishi.calendar") ?? Bundle.main
+        XCTAssertEqual(app.bundleIdentifier ?? "", "app.suishi.calendar", "bundle \(app.bundlePath)")
+        for pinyin in IllustrationCatalog.orderedPinyin {
+            let stem = IllustrationCatalog.resourceStem(for: pinyin)
+            let url = app.url(
+                forResource: stem,
+                withExtension: IllustrationCatalog.imageExtension,
+                subdirectory: IllustrationCatalog.directoryName
+            ) ?? app.url(forResource: stem, withExtension: IllustrationCatalog.imageExtension)
+            XCTAssertNotNil(url, "missing \(stem).jpg in \(app.bundlePath)")
+        }
+
+        let appex = try XCTUnwrap(
+            app.builtInPlugInsURL?.appendingPathComponent("SuishiWidget.appex"),
+            "widget appex"
+        )
+        let widget = try XCTUnwrap(Bundle(url: appex))
+        var appBytes = 0
+        var widgetBytes = 0
+        for pinyin in IllustrationCatalog.orderedPinyin {
+            let stem = IllustrationCatalog.resourceStem(for: pinyin)
+            let appURL = try XCTUnwrap(
+                app.url(forResource: stem, withExtension: "jpg", subdirectory: IllustrationCatalog.directoryName),
+                stem
+            )
+            let widgetURL = try XCTUnwrap(
+                widget.url(forResource: stem, withExtension: "jpg", subdirectory: IllustrationCatalog.directoryName),
+                "widget \(stem)"
+            )
+            let appSize = try fileSize(appURL)
+            let widgetSize = try fileSize(widgetURL)
+            appBytes += appSize
+            widgetBytes += widgetSize
+            XCTAssertGreaterThan(widgetSize, 8_000, stem)
+            XCTAssertLessThan(widgetSize, appSize, "\(stem) should be the downsampled widget plate")
+        }
+        XCTAssertLessThan(widgetBytes, appBytes)
+    }
+
+    private func fileSize(_ url: URL) throws -> Int {
+        let values = try url.resourceValues(forKeys: [.fileSizeKey])
+        return try XCTUnwrap(values.fileSize)
     }
 
     func testPhenologyAndFestivalNotesStayOffFortuneContent() {

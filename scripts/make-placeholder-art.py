@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Draw the neutral placeholder illustration and the app icon.
 
-Neither image contains text. The placeholder is a paper texture, not a
-solar-term painting. The three finished plates (lichun, xiazhi, dongzhi)
-are kept as they are.
+Neither image contains text. The placeholder is a paper texture used only
+when a plate is missing. It does not replace the JPEG plates.
 """
 
 from pathlib import Path

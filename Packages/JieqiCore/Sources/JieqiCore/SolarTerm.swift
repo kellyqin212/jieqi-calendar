@@ -1,6 +1,6 @@
 import Foundation
 
-/// 二十四节气。`pinyin` 与插画文件名一致：把 `lichun.png` 放进插画目录即可替换占位图。
+/// 二十四节气。`pinyin` 与插画文件名一致：`lichun.jpg` 放在插画目录里。
 public enum SolarTerm: String, CaseIterable, Identifiable {
     case lichun = "立春"
     case yushui = "雨水"

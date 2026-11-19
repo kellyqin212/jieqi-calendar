@@ -22,7 +22,7 @@ struct AboutView: View {
 
                     section(title: "人工智能生成合成内容") {
                         Text(AppCopy.aiNotice)
-                        Text("成稿目前有立春、夏至、冬至三张，图中没有字。其余节气和节日仍是一张素纸占位，那张占位图不是生成插画。")
+                        Text("二十四节气和十一个传统节日都有成稿，图里没有字。清明节与清明节气共用一张。北方小年和南方小年各自一张。")
                             .foregroundStyle(Theme.secondary(scheme))
                     }
 

@@ -15,6 +15,8 @@ extension EnvironmentValues {
 struct LaunchConfiguration {
     enum Screen: String {
         case home
+        case term
+        case festival
         case month
         case about
         case widgets
