@@ -53,7 +53,7 @@ struct SuishiWidget: Widget {
         StaticConfiguration(kind: kind, provider: SuishiProvider()) { entry in
             SuishiWidgetView(entry: entry)
         }
-        .configurationDisplayName("岁时")
+        .configurationDisplayName("素历")
         .description("公历、农历和节气。没有宜忌，也没有广告。")
         .supportedFamilies([.systemSmall, .systemMedium])
     }

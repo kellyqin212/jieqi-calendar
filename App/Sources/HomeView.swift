@@ -9,7 +9,7 @@ struct HomeView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("岁时")
+            Text("素历")
                 .font(.custom(Theme.serif, size: 18))
             if IllustrationStore.hasDedicatedImage(day.illustrationPinyin) {
                 Text(AppCopy.aiMark)

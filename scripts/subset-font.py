@@ -17,7 +17,7 @@ from fontTools.ttLib import TTFont
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "App" / "Resources" / "Fonts" / "JieqiSong-Regular.otf"
 
-REQUIRED = "岁时立春夏至冬至闰五月初七丙午马蛇龙乙巳甲辰人工智能生成思源宋体清明端午中秋"
+REQUIRED = "素历岁时立春夏至冬至闰五月初七丙午马蛇龙乙巳甲辰人工智能生成思源宋体清明端午中秋"
 
 
 def collect_text() -> str:
