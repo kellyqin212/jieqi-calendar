@@ -8,79 +8,87 @@ struct HomeView: View {
     private var day: DayDetail { Almanac.day(on: now) }
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            IllustrationImage(pinyin: day.illustrationPinyin)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea()
+        VStack(alignment: .leading, spacing: 5) {
+            Text("岁时")
+                .font(.custom(Theme.serif, size: 18))
+            if IllustrationStore.hasDedicatedImage(day.illustrationPinyin) {
+                Text(AppCopy.aiMark)
+                    .font(.system(size: 11))
+                    .foregroundStyle(Theme.inkSoft)
+            }
+            Text(day.gregorianText)
+                .font(.custom(Theme.serif, size: 30))
+                .padding(.top, 8)
+            Text(day.weekdayLabel)
+                .font(.system(size: 15))
+                .foregroundStyle(Theme.inkSoft)
+            Text(day.lunarLine)
+                .font(.custom(Theme.serif, size: 22))
+                .padding(.top, 2)
+            Text(day.ganZhiLine)
+                .font(.system(size: 14))
+                .foregroundStyle(Theme.inkSoft)
 
-            LinearGradient(
-                colors: [
-                    Theme.paperLight.opacity(0.72),
-                    Theme.paperLight.opacity(0.28),
-                    Theme.paperLight.opacity(0),
-                ],
-                startPoint: .top,
-                endPoint: .center
-            )
+            if day.featuredFestival != nil {
+                Text("节日")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Theme.cinnabar)
+                    .padding(.top, 12)
+            }
+            Button {
+                showDetail = true
+            } label: {
+                Text(day.heroTitle)
+                    .font(.custom(Theme.serif, size: 72))
+                    .foregroundStyle(Theme.ink)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.5)
+                    .padding(.top, day.featuredFestival == nil ? 12 : 0)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(day.heroTitle)
+
+            Text(day.termTimeLine)
+                .font(.system(size: 14))
+            Text(day.nextTermLine)
+                .font(.system(size: 14))
+                .foregroundStyle(Theme.inkSoft)
+            if day.featuredFestival != nil {
+                Text("节气 \(day.currentTerm.term.name)")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Theme.inkSoft)
+            }
+            Spacer(minLength: 0)
+        }
+        .foregroundStyle(Theme.ink)
+        .padding(.horizontal, 24)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background {
+            GeometryReader { geo in
+                let width = geo.size.width
+                let height = geo.size.height
+                ZStack(alignment: .top) {
+                    IllustrationImage(pinyin: day.illustrationPinyin)
+                        .frame(width: width, height: height)
+                        .clipped()
+                    LinearGradient(
+                        stops: [
+                            .init(color: Theme.paperLight.opacity(0.94), location: 0),
+                            .init(color: Theme.paperLight.opacity(0.88), location: 0.38),
+                            .init(color: Theme.paperLight.opacity(0.5), location: 0.7),
+                            .init(color: Theme.paperLight.opacity(0), location: 1),
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(width: width, height: height * 0.72)
+                }
+                .frame(width: width, height: height)
+            }
             .ignoresSafeArea()
             .allowsHitTesting(false)
-
-            VStack(alignment: .leading, spacing: 6) {
-                Text("岁时")
-                    .font(.custom(Theme.serif, size: 18))
-                if IllustrationStore.hasDedicatedImage(day.illustrationPinyin) {
-                    Text(AppCopy.aiMark)
-                        .font(.system(size: 11))
-                        .foregroundStyle(Theme.inkSoft)
-                }
-                Text(day.gregorianText)
-                    .font(.custom(Theme.serif, size: 30))
-                    .padding(.top, 10)
-                Text(day.weekdayLabel)
-                    .font(.system(size: 15))
-                    .foregroundStyle(Theme.inkSoft)
-                Text(day.lunarLine)
-                    .font(.custom(Theme.serif, size: 22))
-                    .padding(.top, 4)
-                Text(day.ganZhiLine)
-                    .font(.system(size: 14))
-                    .foregroundStyle(Theme.inkSoft)
-
-                if day.featuredFestival != nil {
-                    Text("节日")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Theme.cinnabar)
-                        .padding(.top, 18)
-                }
-                Button {
-                    showDetail = true
-                } label: {
-                    Text(day.heroTitle)
-                        .font(.custom(Theme.serif, size: 84))
-                        .foregroundStyle(Theme.ink)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.5)
-                        .padding(.top, day.featuredFestival == nil ? 18 : 0)
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(day.heroTitle)
-
-                Text(day.termTimeLine)
-                    .font(.system(size: 14))
-                Text(day.nextTermLine)
-                    .font(.system(size: 14))
-                    .foregroundStyle(Theme.inkSoft)
-                if day.featuredFestival != nil {
-                    Text("节气 \(day.currentTerm.term.name)")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Theme.inkSoft)
-                }
-                Spacer(minLength: 0)
-            }
-            .foregroundStyle(Theme.ink)
-            .padding(.horizontal, 28)
-            .padding(.top, 12)
-            .padding(.bottom, 24)
         }
         .sheet(isPresented: $showDetail) {
             TermDetailSheet(
