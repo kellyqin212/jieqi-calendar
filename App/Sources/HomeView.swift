@@ -70,20 +70,21 @@ struct HomeView: View {
                 let width = geo.size.width
                 let height = geo.size.height
                 ZStack(alignment: .top) {
+                    Theme.paperLight
                     IllustrationImage(pinyin: day.illustrationPinyin)
-                        .frame(width: width, height: height)
+                        .frame(width: width, height: height * 0.78)
+                        .frame(width: width, height: height, alignment: .bottom)
                         .clipped()
                     LinearGradient(
                         stops: [
-                            .init(color: Theme.paperLight.opacity(0.94), location: 0),
-                            .init(color: Theme.paperLight.opacity(0.88), location: 0.38),
-                            .init(color: Theme.paperLight.opacity(0.5), location: 0.7),
+                            .init(color: Theme.paperLight, location: 0),
+                            .init(color: Theme.paperLight.opacity(0.94), location: 0.62),
                             .init(color: Theme.paperLight.opacity(0), location: 1),
                         ],
                         startPoint: .top,
                         endPoint: .bottom
                     )
-                    .frame(width: width, height: height * 0.72)
+                    .frame(width: width, height: height * 0.46)
                 }
                 .frame(width: width, height: height)
             }
