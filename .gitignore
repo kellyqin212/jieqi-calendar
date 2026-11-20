@@ -1,0 +1,11 @@
+.DS_Store
+build/
+DerivedData/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+.swiftpm/
+.build/
+screenshots/
+*.moved-aside
+SourceHanSerifCN-Regular.otf

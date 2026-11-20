@@ -1,0 +1,89 @@
+{
+  "identifier" : "A7C3E1B29D",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "25.00",
+      "familyShareable" : false,
+      "internalID" : "E5F6A7B8C9",
+      "localizations" : [
+        {
+          "description" : "解锁第二套节气插画和进阶小组件。农历、节气和节日查阅仍然免费。",
+          "displayName" : "第二套插画主题",
+          "locale" : "zh_Hans"
+        },
+        {
+          "description" : "Unlocks the second solar-term illustration theme and advanced widgets.",
+          "displayName" : "Second Illustration Theme",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "app.suishi.theme.premium",
+      "referenceName" : "Premium Illustration Theme",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "SUISHILOCAL",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_locale" : "zh_Hans",
+    "_storefront" : "CHN",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
